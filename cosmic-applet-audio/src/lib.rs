@@ -112,7 +112,7 @@ impl Audio {
         }
     }
 
-    pub fn output_slider(&self) -> Slider<'_, u32, Message> {
+    pub fn output_slider(&self) -> Element<'_, Message> {
         slider(
             0..=self.max_sink_volume,
             self.model.active_sink.volume,
@@ -120,9 +120,10 @@ impl Audio {
         )
         .width(Length::FillPortion(5))
         .breakpoints(self.sink_breakpoints)
+        .into()
     }
 
-    pub fn input_slider(&self) -> Slider<'_, u32, Message> {
+    pub fn input_slider(&self) -> Element<'_, Message> {
         slider(
             0..=self.max_source_volume,
             self.model.active_source.volume,
@@ -130,9 +131,10 @@ impl Audio {
         )
         .width(Length::FillPortion(5))
         .breakpoints(self.source_breakpoints)
+        .into()
     }
 
-    pub fn toggle_output_mute_button(&self) -> Builder<'_, Message, cosmic::theme::Button::Icon> {
+    pub fn toggle_output_mute_button(&self) -> Element<'_, Message> {
         button::icon(
             icon::from_name(self.output_icon_name())
                 .size(24)
@@ -142,9 +144,10 @@ impl Audio {
         .icon_size(24)
         .line_height(24)
         .on_press(Message::ToggleSinkMute)
+        .into()
     }
 
-    pub fn toggle_input_mute_button(&self) -> Builder<'_, Message, cosmic::theme::Button::Icon> {
+    pub fn toggle_input_mute_button(&self) -> Element<'_, Message> {
         button::icon(
             icon::from_name(self.input_icon_name())
                 .size(24)
@@ -154,6 +157,7 @@ impl Audio {
         .icon_size(24)
         .line_height(24)
         .on_press(Message::ToggleSourceMute)
+        .into()
     }
 }
 
