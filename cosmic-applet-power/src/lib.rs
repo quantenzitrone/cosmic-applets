@@ -44,12 +44,12 @@ pub fn run() -> cosmic::iced::Result {
     cosmic::applet::run::<Power>(())
 }
 
+#[derive(Default)]
 pub struct Power {
     core: cosmic::app::Core,
     icon_name: String,
     popup: Option<window::Id>,
     token_tx: Option<calloop::channel::Sender<TokenRequest>>,
-    subsurface_id: window::Id,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -104,7 +104,6 @@ impl cosmic::Application for Power {
             Self {
                 core,
                 icon_name: "system-shutdown-symbolic".to_string(),
-                subsurface_id: window::Id::unique(),
                 token_tx: None,
                 popup: Option::default(),
             },
