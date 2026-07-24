@@ -44,7 +44,7 @@ pub fn run() -> cosmic::iced::Result {
     cosmic::applet::run::<Power>(())
 }
 
-struct Power {
+pub struct Power {
     core: cosmic::app::Core,
     icon_name: String,
     popup: Option<window::Id>,
@@ -53,7 +53,7 @@ struct Power {
 }
 
 #[derive(Debug, Clone, Copy)]
-enum PowerAction {
+pub enum PowerAction {
     Lock,
     LogOut,
     Suspend,
@@ -75,7 +75,7 @@ impl PowerAction {
 }
 
 #[derive(Debug, Clone)]
-enum Message {
+pub enum Message {
     Action(PowerAction),
     TogglePopup,
     OpenSettings,
@@ -315,25 +315,25 @@ fn text_icon(name: &str, size: u16) -> cosmic::widget::Icon {
 
 // ### System helpers
 
-async fn restart() -> zbus::Result<()> {
+pub async fn restart() -> zbus::Result<()> {
     let connection = Connection::system().await?;
     let manager_proxy = ManagerProxy::new(&connection).await?;
     manager_proxy.reboot(true).await
 }
 
-async fn shutdown() -> zbus::Result<()> {
+pub async fn shutdown() -> zbus::Result<()> {
     let connection = Connection::system().await?;
     let manager_proxy = ManagerProxy::new(&connection).await?;
     manager_proxy.power_off(true).await
 }
 
-async fn suspend() -> zbus::Result<()> {
+pub async fn suspend() -> zbus::Result<()> {
     let connection = Connection::system().await?;
     let manager_proxy = ManagerProxy::new(&connection).await?;
     manager_proxy.suspend(true).await
 }
 
-async fn lock() -> zbus::Result<()> {
+pub async fn lock() -> zbus::Result<()> {
     let connection = Connection::system().await?;
     let manager_proxy = ManagerProxy::new(&connection).await?;
     // Get the session this current process is running in
@@ -370,7 +370,7 @@ async fn lock() -> zbus::Result<()> {
     }
 }
 
-async fn log_out() -> zbus::Result<()> {
+pub async fn log_out() -> zbus::Result<()> {
     let session_type = std::env::var("XDG_CURRENT_DESKTOP").ok();
     let connection = Connection::session().await?;
     if let Some("pop:GNOME") = session_type.as_ref().map(|s| s.trim()) {
