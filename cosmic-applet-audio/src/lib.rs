@@ -82,7 +82,7 @@ pub struct Audio {
 }
 
 impl Audio {
-    fn output_icon_name(&self) -> &'static str {
+    pub fn output_icon_name(&self) -> &'static str {
         let volume = self.model.active_sink.volume;
         let mute = self.model.active_sink.mute;
         if mute || volume == 0 {
@@ -98,7 +98,7 @@ impl Audio {
         }
     }
 
-    fn input_icon_name(&self) -> &'static str {
+    pub fn input_icon_name(&self) -> &'static str {
         let volume = self.model.active_source.volume;
         let mute = self.model.active_source.mute;
         if mute || volume == 0 {
@@ -154,7 +154,7 @@ pub enum Message {
 // on leave of applet, popup button is on top again
 
 impl Audio {
-    fn playback_buttons(&self) -> Vec<Element<'_, Message>> {
+    pub fn playback_buttons(&self) -> Vec<Element<'_, Message>> {
         let mut elements: Vec<Element<'_, Message>> = Vec::new();
         if self.player_status.is_some() && self.config.show_media_controls_in_top_panel {
             if self
