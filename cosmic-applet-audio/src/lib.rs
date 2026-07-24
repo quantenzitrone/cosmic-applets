@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 mod localize;
-mod model;
+pub mod model;
 mod mouse_area;
 
 use crate::localize::localize;
@@ -60,7 +60,7 @@ pub struct Audio {
     /// Varlink connection to `com.system76.CosmicSettings.Audio`.
     audio_client: Option<Rc<RefCell<audio_client::Client>>>,
     /// Known audio device state
-    model: model::Model,
+    pub model: model::Model,
     /// Whether to expand the revealer of a source or sink device.
     is_open: IsOpen,
     /// Max slider volume for the sink device, as determined by the amplification property.
