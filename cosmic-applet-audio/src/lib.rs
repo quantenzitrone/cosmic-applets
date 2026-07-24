@@ -132,7 +132,7 @@ impl Audio {
         .breakpoints(self.source_breakpoints)
     }
 
-    pub fn toggle_output_mute_button(&self) -> Builder<'_, Message, Icon> {
+    pub fn toggle_output_mute_button(&self) -> Builder<'_, Message, cosmic::theme::Button::Icon> {
         button::icon(
             icon::from_name(self.output_icon_name())
                 .size(24)
@@ -144,7 +144,7 @@ impl Audio {
         .on_press(Message::ToggleSinkMute)
     }
 
-    pub fn toggle_input_mute_button(&self) -> Builder<'_, Message, Icon> {
+    pub fn toggle_input_mute_button(&self) -> Builder<'_, Message, cosmic::theme::Button::Icon> {
         button::icon(
             icon::from_name(self.input_icon_name())
                 .size(24)
