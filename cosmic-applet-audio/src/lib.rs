@@ -111,6 +111,50 @@ impl Audio {
             "microphone-sensitivity-high-symbolic"
         }
     }
+
+    pub fn output_slider(&self) -> Slider<'_, u32, Message> {
+        slider(
+            0..=self.max_sink_volume,
+            self.model.active_sink.volume,
+            Message::SetSinkVolume,
+        )
+        .width(Length::FillPortion(5))
+        .breakpoints(self.sink_breakpoints)
+    }
+
+    pub fn input_slider(&self) -> Slider<'_, u32, Message> {
+        slider(
+            0..=self.max_source_volume,
+            self.model.active_source.volume,
+            Message::SetSourceVolume,
+        )
+        .width(Length::FillPortion(5))
+        .breakpoints(self.source_breakpoints)
+    }
+
+    pub fn toggle_output_mute_button(&self) -> Builder<'_, Message, Icon> {
+        button::icon(
+            icon::from_name(self.output_icon_name())
+                .size(24)
+                .symbolic(true),
+        )
+        .class(cosmic::theme::Button::Icon)
+        .icon_size(24)
+        .line_height(24)
+        .on_press(Message::ToggleSinkMute)
+    }
+
+    pub fn toggle_input_mute_button(&self) -> Builder<'_, Message, Icon> {
+        button::icon(
+            icon::from_name(self.input_icon_name())
+                .size(24)
+                .symbolic(true),
+        )
+        .class(cosmic::theme::Button::Icon)
+        .icon_size(24)
+        .line_height(24)
+        .on_press(Message::ToggleSourceMute)
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Default)]
@@ -677,35 +721,11 @@ impl cosmic::Application for Audio {
             .map(|pos| self.model.sources.sorted_display[pos].as_ref());
 
         let mut audio_content = {
-            let output_slider = slider(
-                0..=self.max_sink_volume,
-                self.model.active_sink.volume,
-                Message::SetSinkVolume,
-            )
-            .width(Length::FillPortion(5))
-            .breakpoints(self.sink_breakpoints);
-
-            let input_slider = slider(
-                0..=self.max_source_volume,
-                self.model.active_source.volume,
-                Message::SetSourceVolume,
-            )
-            .width(Length::FillPortion(5))
-            .breakpoints(self.source_breakpoints);
-
             column![
                 padded_control(
                     row![
-                        button::icon(
-                            icon::from_name(self.output_icon_name())
-                                .size(24)
-                                .symbolic(true),
-                        )
-                        .class(cosmic::theme::Button::Icon)
-                        .icon_size(24)
-                        .line_height(24)
-                        .on_press(Message::ToggleSinkMute),
-                        output_slider,
+                        self.toggle_output_mute_button(),
+                        self.output_slider(),
                         container(text(&self.model.active_sink.volume_text).size(16))
                             .width(Length::FillPortion(1))
                             .align_x(Alignment::End)
@@ -715,16 +735,8 @@ impl cosmic::Application for Audio {
                 ),
                 padded_control(
                     row![
-                        button::icon(
-                            icon::from_name(self.input_icon_name())
-                                .size(24)
-                                .symbolic(true),
-                        )
-                        .class(cosmic::theme::Button::Icon)
-                        .icon_size(24)
-                        .line_height(24)
-                        .on_press(Message::ToggleSourceMute),
-                        input_slider,
+                        self.toggle_input_mute_button(),
+                        self.input_slider(),
                         container(text(&self.model.active_source.volume_text).size(16))
                             .width(Length::FillPortion(1))
                             .align_x(Alignment::End)
